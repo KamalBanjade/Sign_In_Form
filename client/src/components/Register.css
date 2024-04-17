@@ -66,8 +66,8 @@ p{
     width: 300px;
     height: 30px;
     border-radius: 8px;
-    background-color: #AC44FD;
-    border: #AC44FD;
+    background-color: #0e0316;
+    border: #10031a;
 
 }
 
@@ -76,11 +76,12 @@ p{
     font-size: 15px;
     font-weight: bold;
     color: white;
+    margin-top: -0px;
 }
 
 .btn:hover
 {
-    background-color: #c68ef1;
-    border: #c68ef1;
+    background-color: #00fb2a;
+    border: #07f566;
     
 }

@@ -42,8 +42,6 @@ export default function Register() {
       <form className="form" onSubmit={handelSubmit}>
         <div className="main">
           <h1>Sign Up</h1>
-          <p>Let's start the journey together.</p>
-
           <div className="email-text">
             <label htmlFor="email">Email</label>
           </div>
