@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const forms = require('../../../models/forms');
+const forms = require('../../models/forms');
 
-// @route   POST api/signin
-// @desc    Sign in a user
-// @access  Public
 router.post('/', (req, res) => {
   const { email, password } = req.body;
 
