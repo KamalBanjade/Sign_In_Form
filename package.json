@@ -1,7 +1,7 @@
 {
   "name": "sign_in_form",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server/app.js",
   "scripts": {
     "app": "nodemon app.js",
     "start": "node app.js",
