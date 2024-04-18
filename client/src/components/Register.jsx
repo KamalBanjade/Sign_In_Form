@@ -1,33 +1,30 @@
-//Importing all the needed libraries and all
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "./Register.css";
 
-//defining register function
 export default function Register() {
-  //useState definition for user details and all the fields
   const [userDetails, setUserDetails] = useState({
     email: "",
     username: "",
     password: "",
   });
 
-  //function to handel inputs i.e. fill userDetails fields with entered values in text box
-  function handelInput(event) {
-    setUserDetails((prevState) => {
-      return { ...prevState, [event.target.name]: event.target.value }; //this is the syntax, learn on the go
-    });
+  function handleInput(event) {
+    setUserDetails((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value
+    }));
   }
-  function handelSubmit(event) {
+
+  function handleSubmit(event) {
     event.preventDefault();
 
-    //function to handel submit and call apis
     fetch("http://localhost:8082/api/Register", {
       method: "POST",
       body: JSON.stringify(userDetails),
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => response.json()) //for getting only the sent response from backend and removing other info
+      .then((response) => response.json())
       .then((data) => {
         console.log(data);
       })
@@ -36,10 +33,9 @@ export default function Register() {
       });
   }
 
-  //basic HTML and for form design
   return (
     <div className="wrapper">
-      <form className="form" onSubmit={handelSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <div className="main">
           <h1>Sign Up</h1>
           <div className="email-text">
@@ -49,26 +45,29 @@ export default function Register() {
             <input
               className="inp-box"
               type="email"
+              id="email"
               name="email"
-              onChange={handelInput}
+              onChange={handleInput}
               value={userDetails.email}
               required
-            ></input>
+            />
           </div>
 
           <div className="input-text">
-            <label htmlFor="text">Username</label>
+            <label htmlFor="username">Username</label>
           </div>
           <div className="input-box">
             <input
               className="inp-box"
               type="text"
+              id="username"
               name="username"
-              onChange={handelInput}
+              onChange={handleInput}
               value={userDetails.username}
               required
-            ></input>
+            />
           </div>
+
           <div className="password-text">
             <label htmlFor="password">Password</label>
           </div>
@@ -76,15 +75,18 @@ export default function Register() {
             <input
               className="inp-box"
               type="password"
+              id="password"
               name="password"
-              onChange={handelInput}
+              onChange={handleInput}
               value={userDetails.password}
               required
-            ></input>
+            />
           </div>
+
           <button type="submit" className="btn">
             <p className="loginTxt">Sign Up</p>
           </button>
+
           <div className="register-link">
             <p>
               Already Registered? <Link to="/">Login</Link>

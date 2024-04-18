@@ -47,6 +47,7 @@ export default function SignIn() {
             <input
               className="inp-box"
               type="email"
+              id="email"
               name="email"
               onChange={handelInputs}
               value={userDetails.email}
@@ -60,6 +61,7 @@ export default function SignIn() {
             <input
               className="inp-box"
               type="password"
+              id="password"
               name="password"
               onChange={handelInputs}
               value={userDetails.password}
@@ -67,8 +69,8 @@ export default function SignIn() {
             />
           </div>
           <div className="remember-forget">
-            <label>
-              <input type="checkbox" />
+            <label htmlFor="remember">
+              <input type="checkbox" id="remember" />
               Remember Me
             </label>
             <a href="/">Forget Password?</a>
