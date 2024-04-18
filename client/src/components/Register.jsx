@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "./Register.css";
@@ -18,20 +20,38 @@ export default function Register() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
+  
     fetch("http://localhost:8082/api/Register", {
       method: "POST",
       body: JSON.stringify(userDetails),
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          // If response status is not OK, throw an error
+          throw new Error('Register failed. Please try again.');
+        }
+        // If response status is OK, return the response JSON data
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
+        // Check if the response data indicates successful registration
+        if (data.success) {
+          // If registration is successful, show success toast
+          toast.success('Successfully Registered!');
+        } else {
+          // If registration fails, show error toast
+          toast.error('Register failed. Please try again.');
+        }
       })
       .catch((err) => {
         console.log(err);
+        // If there's an error with the fetch request, show error toast
+        toast.error('Register failed. Please try again.');
       });
   }
+  
 
   return (
     <div className="wrapper">

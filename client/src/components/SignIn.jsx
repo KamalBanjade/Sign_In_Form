@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "./SignIn.css";
@@ -18,21 +20,39 @@ export default function SignIn() {
   function handelSubmit(event) {
     event.preventDefault();
     console.log(userDetails);
-
+  
     fetch("http://localhost:8082/api/SignIn", {
       method: "POST",
       body: JSON.stringify(userDetails),
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          // If response status is not OK, throw an error
+          throw new Error('Sign-in failed. Please try again.');
+        }
+        // If response status is OK, return the response JSON data
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
-        // Redirect to home page or handle success as needed
+        // Check if the response data indicates successful sign-in
+        if (data.success) {
+          // If sign-in is successful, show success toast
+          toast.success('Successfully signed in!');
+          // Redirect to home page or handle success as needed
+        } else {
+          // If sign-in fails, show error toast
+          toast.error('Sign-in failed. Please try again.');
+        }
       })
       .catch((err) => {
         console.log(err);
+        // If there's an error with the fetch request, show error toast
+        toast.error('Sign-in failed. Please try again.');
       });
   }
+  
 
   return (
     <div className="wrapper">
