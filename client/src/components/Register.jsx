@@ -48,7 +48,7 @@ export default function Register() {
       .catch((err) => {
         console.log(err);
         // If there's an error with the fetch request, show error toast
-        toast.error('Register failed. Please try again.');
+        toast.error('Account already exist. Please try again.');
       });
   }
   
