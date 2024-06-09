@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const forms = require('../../models/forms');
 
-// @route   POST api/register
-// @desc    Register a new user
-// @access  Public
 router.post('/', async (req, res) => {
   const { username, email, password } = req.body;
 

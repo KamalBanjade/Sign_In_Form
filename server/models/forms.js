@@ -18,6 +18,12 @@ const SignInSchema = new mongoose.Schema({
   created_at: {
     type: Date,
     default: Date.now
+  },
+  resetToken: {
+    type: String
+  },
+  tokenExpiration: {
+    type: Date
   }
 });
 

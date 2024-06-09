@@ -1,7 +1,7 @@
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import "./FormStyles.css"; // Import the shared CSS file
 
 export default function SignIn() {
@@ -20,8 +20,8 @@ export default function SignIn() {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(userDetails);
-  
-    fetch("http://localhost:8082/api/SignIn", {
+
+    fetch("http://localhost:8082/api/signin", {
       method: "POST",
       body: JSON.stringify(userDetails),
       headers: { "Content-Type": "application/json" },
@@ -84,7 +84,7 @@ export default function SignIn() {
             <input type="checkbox" id="remember" />
             Remember Me
           </label>
-          <a href="/">Forget Password?</a>
+          <Link to="/forgot-password">Forgot Password?</Link>
         </div>
         <button type="submit" className="btn">
           Login

@@ -2,8 +2,9 @@ const express = require('express');
 const connectDB = require('./config/db');
 const signinRoutes = require('./routes/api/SignIn'); 
 const registerRoutes = require('./routes/api/Register'); 
-const cors = require("cors");
-const bodyParser = require("body-parser");
+const passwordResetRoutes = require('./routes/api/PasswordReset'); 
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -17,11 +18,18 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Use the routes modules as middleware
-app.use("/api/signin", signinRoutes);
-app.use("/api/register", registerRoutes);
+// Log incoming requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`, req.body);
+  next();
+});
 
-app.get("/", (req, res) => res.send("Hello world!"));
+// Use the routes modules as middleware
+app.use('/api/signin', signinRoutes);
+app.use('/api/register', registerRoutes);
+app.use('/api/passwordreset', passwordResetRoutes);
+
+app.get('/', (req, res) => res.send('Hello world!'));
 
 const port = process.env.PORT || 8082;
 app.listen(port, () => console.log(`Server running on port ${port}`));
