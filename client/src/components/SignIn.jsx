@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "react-router-dom";
-import "./FormStyles.css"; // Import the shared CSS file
+import "./FormStyles.css";
 
 export default function SignIn() {
   const [userDetails, setUserDetails] = useState({
@@ -19,7 +19,8 @@ export default function SignIn() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(userDetails);
+
+    console.log('Submitting user details:', userDetails);
 
     fetch("http://localhost:8082/api/signin", {
       method: "POST",
@@ -28,21 +29,17 @@ export default function SignIn() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Sign-in failed. Please try again.');
+          return response.json().then(data => {
+            throw new Error(data.message || 'Sign-in failed. Please try again.');
+          });
         }
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        if (data.success) {
-          toast.success('Successfully signed in!');
-        } else {
-          toast.error('Sign-in failed. Please try again.');
-        }
+        toast.success('Successfully signed in!');
       })
       .catch((err) => {
-        console.log(err);
-        toast.error("Account doesn't exist. Please try again.");
+        toast.error(err.message);
       });
   }
 
@@ -63,7 +60,6 @@ export default function SignIn() {
             onChange={handleInput}
             value={userDetails.email}
             required
-             autoComplete="email"
           />
         </div>
         <div className="password-text">
@@ -78,7 +74,6 @@ export default function SignIn() {
             onChange={handleInput}
             value={userDetails.password}
             required
-            autoComplete="current-password"
           />
         </div>
         <div className="remember-forget">
