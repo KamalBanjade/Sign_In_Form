@@ -26,7 +26,7 @@ export default function SignIn() {
       method: "POST",
       body: JSON.stringify(userDetails),
       headers: { "Content-Type": "application/json" },
-    })
+    })    
       .then((response) => {
         if (!response.ok) {
           return response.json().then(data => {

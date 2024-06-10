@@ -23,7 +23,7 @@ export default function ResetPassword() {
       return;
     }
 
-    fetch("http://localhost:8082/api/passwordreset/reset-password", {
+    fetch(`http://localhost:8082/api/passwordreset/reset-password`, {
       method: "POST",
       body: JSON.stringify({ token, newPassword: password }),
       headers: { "Content-Type": "application/json" },

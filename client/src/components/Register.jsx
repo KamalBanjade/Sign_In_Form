@@ -59,6 +59,7 @@ export default function Register() {
             name="email"
             onChange={handleInput}
             value={userDetails.email}
+            autoComplete="email"
             required
           />
         </div>
@@ -74,6 +75,7 @@ export default function Register() {
             name="username"
             onChange={handleInput}
             value={userDetails.username}
+            autoComplete="username"
             required
           />
         </div>
@@ -89,6 +91,7 @@ export default function Register() {
             name="password"
             onChange={handleInput}
             value={userDetails.password}
+            autoComplete="password"
             required
           />
         </div>

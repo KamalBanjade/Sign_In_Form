@@ -5,6 +5,7 @@ const registerRoutes = require('./routes/api/Register');
 const passwordResetRoutes = require('./routes/api/PasswordReset'); 
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('dotenv').config(); // Add dotenv to load environment variables
 
 const app = express();
 
