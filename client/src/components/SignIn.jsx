@@ -59,6 +59,7 @@ export default function SignIn() {
             name="email"
             onChange={handleInput}
             value={userDetails.email}
+            autoComplete="email"
             required
           />
         </div>
@@ -73,6 +74,7 @@ export default function SignIn() {
             name="password"
             onChange={handleInput}
             value={userDetails.password}
+            autoComplete="current-password"
             required
           />
         </div>
