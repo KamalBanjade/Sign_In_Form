@@ -1,18 +1,15 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client'; // Import createRoot from 'react-dom/client'
-import { ToastContainer } from 'react-toastify'; // Import ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for ToastContainer
+import ReactDOM from 'react-dom/client';
+import Context from './components/ContextProvider/Context';
 import App from './App';
+import {BrowserRouter} from "react-router-dom"
+import "./index.css"
 
-// Replace ReactDOM.render with createRoot
-const root = createRoot(document.getElementById('root')); // Use createRoot
-
-// Render your app inside the root along with the ToastContainer
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <>
-    <React.StrictMode>
+  <Context>
+    <BrowserRouter>
       <App />
-    </React.StrictMode>
-    <ToastContainer /> {/* Include the ToastContainer */}
-  </>
+    </BrowserRouter>
+  </Context>
 );

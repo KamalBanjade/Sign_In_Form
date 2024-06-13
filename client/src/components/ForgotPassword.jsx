@@ -1,61 +1,110 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import "./FormStyles.css";
+import "./mix.css";
 
-export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+const ForgotPassword = () => {
+  const { id, token } = useParams();
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleInput = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    fetch("http://localhost:8082/api/passwordreset", {
-      method: "POST",
-      body: JSON.stringify({ email }),
-      headers: { "Content-Type": "application/json" },
-    })
-    .then((response) => {
-      if (!response.ok) {
-        return response.text().then(text => { throw new Error(text) });
+  const userValid = async () => {
+    const res = await fetch(`http://localhost:8009/forgotpassword/${id}/${token}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
       }
-      return response.json();
-    })
-    .then((data) => {
-      toast.success('Recovery email sent successfully!');
-    })
-    .catch((err) => {
-      toast.error(`Failed to send recovery email: ${err.message}`);
     });
+
+    const data = await res.json();
+    if (data.status !== 201) {
+      navigate("*");
+    }
   };
+
+  const setval = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const setConfirmVal = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const sendpassword = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
+
+    setLoading(true);
+
+    const res = await fetch(`http://localhost:8009/${id}/${token}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ password })
+    });
+
+    const data = await res.json();
+    if (data.status === 201) {
+      setPassword("");
+      setConfirmPassword("");
+      toast.success("Password Updated Successfully!");
+      setTimeout(() => {
+        navigate("/");
+      }, 1300); // Navigate to login after 1.3 seconds
+    } else {
+      toast.error("Token Expired, generate new Link");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    userValid();
+  }, []);
 
   return (
-    <div className="wrapper">
-      <form className="form" onSubmit={handleSubmit}>
-        <div className="main">
-          <h1>Forgot Password</h1>
-          <div className="input-text">
-            <label htmlFor="email">Email</label>
-          </div>
-          <div className="input-box">
+    <section className="forgot-password-section">
+      <div className="form-container">
+        <div className="form-heading">
+          <h1>Enter your NEW Password</h1>
+        </div>
+        <form onSubmit={sendpassword}>
+          <div className="form-input">
+            <label htmlFor="password">New Password</label>
             <input
-              className="inp-box"
-              type="email"
-              id="email"
-              name="email"
-              onChange={handleInput}
-              value={email}
-              required
+              type="password"
+              name="password"
+              value={password}
+              onChange={setval}
+              id="password"
+              placeholder="Enter Your New Password"
             />
           </div>
-          <button type="submit" className="btn">
-            <p className="loginTxt">Send Reset Link</p>
+          <div className="form-input">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={setConfirmVal}
+              id="confirmPassword"
+              placeholder="Confirm Your Password"
+            />
+          </div>
+          <button className="custom-button" type="submit" disabled={loading}>
+            {loading ? "Sending..." : "Send"}
           </button>
-        </div>
-      </form>
-    </div>
+        </form>
+        <ToastContainer />
+      </div>
+    </section>
   );
-}
+};
+
+export default ForgotPassword;
