@@ -18,7 +18,7 @@ function App() {
   const DashboardValid = async () => {
     let token = localStorage.getItem("usersdatatoken");
 
-    const res = await fetch("https://sign-in-form-4.onrender.com", { // Update URL to your backend
+    const res = await fetch("/validuser", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
