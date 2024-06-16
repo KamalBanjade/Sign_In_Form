@@ -152,7 +152,7 @@ router.get("/validuser",authenticate, async(req,res)=>{
                 from:"kamalbanjade2004@gmail.com",
                 to:email,
                 subject:"Sending Email For password Reset",
-                text:`This Link Valid For 2 MINUTES http://localhost:5173/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
+                text:`This Link Valid For 2 MINUTES https://sign-in-form-rho.vercel.app/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
             }
 
             transporter.sendMail(mailOptions,(error,info)=>{

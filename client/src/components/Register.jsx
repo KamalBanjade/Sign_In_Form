@@ -44,7 +44,7 @@ const Register = () => {
     } else if (password !== cpassword) {
       toast.error("Password and Confirm password do not match");
     } else {
-      const data = await fetch("http://localhost:8009/register", {
+      const data = await fetch("https://sign-in-form-4.onrender.com/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
