@@ -44,23 +44,29 @@ const Register = () => {
     } else if (password !== cpassword) {
       toast.error("Password and Confirm password do not match");
     } else {
-      const data = await fetch("https://sign-in-form.onrender.com/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ fname, email, password, cpassword })
-      });
+      try {
+        const response = await fetch("https://sign-in-form.onrender.com/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ fname, email, password, cpassword })
+        });
 
-      const res = await data.json();
-      if (res.status === 201) {
-        toast.success("Registration Successful!");
-        setInpval({ fname: "", email: "", password: "", cpassword: "" });
-        setTimeout(() => {
-          navigate("/");
-        }, 1300); // Navigate to home (login page) after 1.3 seconds
-      } else {
-        toast.error("Registration Failed");
+        const res = await response.json();
+
+        if (response.ok) {
+          toast.success("Registration Successful!");
+          setInpval({ fname: "", email: "", password: "", cpassword: "" });
+          setTimeout(() => {
+            navigate("/");
+          }, 1300); // Navigate to home (login page) after 1.3 seconds
+        } else {
+          toast.error(res.error || "Registration Failed");
+        }
+      } catch (error) {
+        console.error("Registration error:", error);
+        toast.error("Something went wrong. Please try again later.");
       }
     }
     setLoading(false);

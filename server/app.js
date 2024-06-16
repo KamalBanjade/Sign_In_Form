@@ -9,8 +9,10 @@ const port = process.env.PORT || 8009;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ 
-    origin: 'https://sign-in-form-rho.vercel.app', // Allow your frontend domain
-    credentials: true // Allow credentials (cookies, authorization headers, etc.)
+  origin: 'https://sign-in-form-rho.vercel.app', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true 
 }));
 
 app.use(router);
