@@ -1,60 +1,54 @@
 const express = require("express");
 const router = new express.Router();
 const userdb = require("../models/userSchema");
-var bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
 const nodemailer = require("nodemailer");
+<<<<<<< HEAD
 const jwt  = require("jsonwebtoken");
 const keysecret = "akldfjkdfkdfkdggkfjkdkadkfjirwekjrkdjfsd"
 
 // email config
+=======
+const jwt = require("jsonwebtoken");
+const keysecret = "akldfjkdfkdfkdggkfjkdkadkfjirwekjrkdjfsd";
+>>>>>>> 82e03c7b728f9a25f4a682a6427e435f603e22e4
 
 const transporter = nodemailer.createTransport({
-    service:"gmail",
-    auth:{
+    service: "gmail",
+    auth: {
         user: 'kamalbanjade2004@gmail.com',
         pass: 'sfio nrlp bnvy cszo',
     }
-}) 
+});
 
-
-// for user registration
 router.post("/register", async (req, res) => {
-
     const { fname, email, password, cpassword } = req.body;
 
     if (!fname || !email || !password || !cpassword) {
-        res.status(422).json({ error: "fill all the details" })
+        return res.status(422).json({ error: "Fill all the details" });
     }
 
     try {
-
-        const preuser = await userdb.findOne({ email: email });
-
+        const preuser = await userdb.findOne({ email });
         if (preuser) {
-            res.status(422).json({ error: "This Email is Already Exist" })
+            return res.status(422).json({ error: "This Email is Already Exist" });
         } else if (password !== cpassword) {
-            res.status(422).json({ error: "Password and Confirm Password Not Match" })
+            return res.status(422).json({ error: "Password and Confirm Password Not Match" });
         } else {
-            const finalUser = new userdb({
-                fname, email, password, cpassword
-            });
-
-            // here password hasing
+            const finalUser = new userdb({ fname, email, password, cpassword });
             const storeData = await finalUser.save();
-
-            // console.log(storeData);
-            res.status(201).json({ status: 201, storeData })
+            res.status(201).json({ status: 201, storeData });
         }
-
     } catch (error) {
         res.status(422).json(error);
         console.log("catch block error");
     }
 });
 
+// Other routes...
 
-
+module.exports = router;
 
 // user Login
  router.post("/login", async (req, res) => {
@@ -153,7 +147,7 @@ router.get("/validuser",authenticate, async(req,res)=>{
                 from:"kamalbanjade2004@gmail.com",
                 to:email,
                 subject:"Sending Email For password Reset",
-                text:`This Link Valid For 2 MINUTES http://localhost:5173/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
+                text:`This Link Valid For 2 MINUTES https://sign-in-form-rho.vercel.app/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
             }
 
             transporter.sendMail(mailOptions,(error,info)=>{
@@ -226,7 +220,13 @@ router.post("/:id/:token",async(req,res)=>{
     }
 
 })
+<<<<<<< HEAD
  
+=======
+router.get("/protected-route", authenticate, (req, res) => {
+    res.status(200).json({ message: "You have access", user: req.rootUser });
+});
+>>>>>>> 82e03c7b728f9a25f4a682a6427e435f603e22e4
 
 module.exports = router;
 
