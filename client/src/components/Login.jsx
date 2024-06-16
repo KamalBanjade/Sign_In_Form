@@ -30,7 +30,7 @@ const Login = () => {
       toast.error("Password must be at least 6 characters!");
     } else {
       try {
-        const data = await fetch("https://sign-in-form-4.onrender.com/login", {
+        const data = await fetch("https://sign-in-form.onrender.com/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })

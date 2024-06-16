@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "proxy": "https://sign-in-form-4.onrender.com",
+  "proxy": "https://sign-in-form.onrender.com",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
