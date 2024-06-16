@@ -4,8 +4,9 @@ const userdb = require("../models/userSchema");
 var bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
 const nodemailer = require("nodemailer");
-const jwt = require("jsonwebtoken");
-const keysecret = "akldfjkdfkdfkdggkfjkdkadkfjirwekjrkdjfsd";
+const jwt  = require("jsonwebtoken");
+const keysecret = "akldfjkdfkdfkdggkfjkdkadkfjirwekjrkdjfsd"
+
 // email config
 
 const transporter = nodemailer.createTransport({
@@ -225,7 +226,7 @@ router.post("/:id/:token",async(req,res)=>{
     }
 
 })
-
+ 
 
 module.exports = router;
 
