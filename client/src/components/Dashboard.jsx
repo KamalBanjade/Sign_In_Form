@@ -58,7 +58,7 @@ const Dashboard = () => {
 
     const testBackend = async () => {
       try {
-        const res = await fetch("https://sign-in-form-4.onrender.com/test");
+        const res = await fetch("https://sign-in-form.onrender.com/test");
         const data = await res.json();
         console.log("Test response:", data);
       } catch (error) {
