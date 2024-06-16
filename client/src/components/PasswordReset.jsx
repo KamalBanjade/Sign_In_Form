@@ -20,7 +20,7 @@ const PasswordReset = () => {
     } else if (!email.includes("@")) {
       toast.error("Include @ in your email!");
     } else {
-      const res = await fetch("https://sign-in-form.onrender.com/sendpasswordlink", {
+      const res = await fetch("http://localhost:8009/sendpasswordlink", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

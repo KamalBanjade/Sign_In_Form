@@ -1,54 +1,60 @@
 const express = require("express");
 const router = new express.Router();
 const userdb = require("../models/userSchema");
-const bcrypt = require("bcryptjs");
+var bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
 const nodemailer = require("nodemailer");
-<<<<<<< HEAD
-const jwt  = require("jsonwebtoken");
-const keysecret = "akldfjkdfkdfkdggkfjkdkadkfjirwekjrkdjfsd"
-
-// email config
-=======
 const jwt = require("jsonwebtoken");
-const keysecret = "akldfjkdfkdfkdggkfjkdkadkfjirwekjrkdjfsd";
->>>>>>> 82e03c7b728f9a25f4a682a6427e435f603e22e4
+
+const keysecret = "akldfjkdfkdfkdggkfjkdkadkfjirwekjrkdjfsd"
+// email config
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
+    service:"gmail",
+    auth:{
         user: 'kamalbanjade2004@gmail.com',
         pass: 'sfio nrlp bnvy cszo',
     }
-});
+}) 
 
+
+// for user registration
 router.post("/register", async (req, res) => {
+
     const { fname, email, password, cpassword } = req.body;
 
     if (!fname || !email || !password || !cpassword) {
-        return res.status(422).json({ error: "Fill all the details" });
+        res.status(422).json({ error: "fill all the details" })
     }
 
     try {
-        const preuser = await userdb.findOne({ email });
+
+        const preuser = await userdb.findOne({ email: email });
+
         if (preuser) {
-            return res.status(422).json({ error: "This Email is Already Exist" });
+            res.status(422).json({ error: "This Email is Already Exist" })
         } else if (password !== cpassword) {
-            return res.status(422).json({ error: "Password and Confirm Password Not Match" });
+            res.status(422).json({ error: "Password and Confirm Password Not Match" })
         } else {
-            const finalUser = new userdb({ fname, email, password, cpassword });
+            const finalUser = new userdb({
+                fname, email, password, cpassword
+            });
+
+            // here password hasing
             const storeData = await finalUser.save();
-            res.status(201).json({ status: 201, storeData });
+
+            // console.log(storeData);
+            res.status(201).json({ status: 201, storeData })
         }
+
     } catch (error) {
         res.status(422).json(error);
         console.log("catch block error");
     }
 });
 
-// Other routes...
 
-module.exports = router;
+
 
 // user Login
  router.post("/login", async (req, res) => {
@@ -147,7 +153,7 @@ router.get("/validuser",authenticate, async(req,res)=>{
                 from:"kamalbanjade2004@gmail.com",
                 to:email,
                 subject:"Sending Email For password Reset",
-                text:`This Link Valid For 2 MINUTES https://sign-in-form-rho.vercel.app/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
+                text:`This Link Valid For 2 MINUTES http://localhost:5173/forgotpassword/${userfind.id}/${setusertoken.verifytoken}`
             }
 
             transporter.sendMail(mailOptions,(error,info)=>{
@@ -220,13 +226,61 @@ router.post("/:id/:token",async(req,res)=>{
     }
 
 })
-<<<<<<< HEAD
- 
-=======
-router.get("/protected-route", authenticate, (req, res) => {
-    res.status(200).json({ message: "You have access", user: req.rootUser });
-});
->>>>>>> 82e03c7b728f9a25f4a682a6427e435f603e22e4
+router.post("/google-login", async (req, res) => {
+    const { token } = req.body;
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(token);
+      const uid = decodedToken.uid;
+      const email = decodedToken.email;
+  
+      let user = await userdb.findOne({ email });
+  
+      if (!user) {
+        user = new userdb({ email, password: '', googleId: uid });
+        await user.save();
+      }
+  
+      const jwtToken = jwt.sign({ userId: user._id }, keysecret, { expiresIn: "1h" });
+  
+      res.status(201).json({ status: 201, result: { token: jwtToken } });
+    } catch (error) {
+      res.status(401).json({ error: "Unauthorized" });
+    }
+  });
+  
+  // GitHub Login/Register
+  router.post("/github-login", async (req, res) => {
+    const { code } = req.body;
+    try {
+      const response = await axios.post('https://github.com/login/oauth/access_token', {
+        client_id: 'your-github-client-id',
+        client_secret: 'your-github-client-secret',
+        code
+      }, {
+        headers: { accept: 'application/json' }
+      });
+  
+      const accessToken = response.data.access_token;
+  
+      const userResponse = await axios.get('https://api.github.com/user', {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+  
+      const { id, login, email } = userResponse.data;
+      let user = await userdb.findOne({ email });
+  
+      if (!user) {
+        user = new userdb({ email, password: '', githubId: id });
+        await user.save();
+      }
+  
+      const jwtToken = jwt.sign({ userId: user._id }, keysecret, { expiresIn: "1h" });
+  
+      res.status(201).json({ status: 201, result: { token: jwtToken } });
+    } catch (error) {
+      res.status(401).json({ error: "Unauthorized" });
+    }
+  });
 
 module.exports = router;
 

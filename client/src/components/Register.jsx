@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import "./mix.css";
+import './mix.css';
 
 const Register = () => {
   const [passShow, setPassShow] = useState(false);
@@ -44,33 +44,28 @@ const Register = () => {
     } else if (password !== cpassword) {
       toast.error("Password and Confirm password do not match");
     } else {
-      try {
-        const response = await fetch("https://sign-in-form.onrender.com/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ fname, email, password, cpassword })
-        });
+      const data = await fetch("http://localhost:8009/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fname, email, password, cpassword })
+      });
 
-        const res = await response.json();
-
-        if (response.ok) {
-          toast.success("Registration Successful!");
-          setInpval({ fname: "", email: "", password: "", cpassword: "" });
-          setTimeout(() => {
-            navigate("/");
-          }, 1300); // Navigate to home (login page) after 1.3 seconds
-        } else {
-          toast.error(res.error || "Registration Failed");
-        }
-      } catch (error) {
-        console.error("Registration error:", error);
-        toast.error("Something went wrong. Please try again later.");
+      const res = await data.json();
+      if (res.status === 201) {
+        toast.success("Registration Successful!");
+        setTimeout(() => {
+          navigate("/");
+        }, 1300);
+        setInpval({ fname: "", email: "", password: "", cpassword: "" });
+      } else {
+        toast.error("Registration Failed");
       }
     }
     setLoading(false);
   };
+
 
   return (
     <section className="register-section">

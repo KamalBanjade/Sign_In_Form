@@ -1,8 +1,12 @@
+// src/components/Login.jsx
+
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
-import './mix.css'; 
+import './mix.css';
+
 
 const Login = () => {
   const [passShow, setPassShow] = useState(false);
@@ -30,19 +34,19 @@ const Login = () => {
       toast.error("Password must be at least 6 characters!");
     } else {
       try {
-        const data = await fetch("https://sign-in-form.onrender.com/login", {
+        const res = await fetch("http://localhost:8009/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
         });
 
-        const res = await data.json();
-        if (res.status === 201) {
-          localStorage.setItem("usersdatatoken", res.result.token);
+        const data = await res.json();
+        if (data.status === 201) {
+          localStorage.setItem("usersdatatoken", data.result.token);
           toast.success("Login successful!");
           setTimeout(() => {
             navigate("/dash");
-          }, 1300); // Navigate to dash after 1.3 seconds
+          }, 1300);
           setInpval({ email: "", password: "" });
         } else {
           toast.error("Invalid Credentials");
@@ -84,19 +88,18 @@ const Login = () => {
                 id="password"
                 placeholder="Enter Your Password"
               />
-              
             </div>
           </div>
           <div className="forgot-password">
-          <div className="form-footer">
-            <NavLink to="/password-reset">Forgot password?</NavLink>
+            <div className="form-footer">
+              <NavLink to="/password-reset">Forgot password?</NavLink>
             </div>
           </div>
           <button className="custom-button" type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
           <div className="form-footer">
-          <p>New? <NavLink to="/register">Sign Up</NavLink></p>
+            <p>New? <NavLink to="/register">Sign Up</NavLink></p>
           </div>
         </form>
         <ToastContainer />

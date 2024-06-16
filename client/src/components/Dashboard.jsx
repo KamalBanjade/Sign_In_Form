@@ -17,23 +17,18 @@ const Dashboard = () => {
     let token = localStorage.getItem("usersdatatoken");
 
     try {
-      const res = await fetch("https://sign-in-form.onrender.com/validuser", {
+      const res = await fetch("http://localhost:8009/validuser", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           "Authorization": token
         }
       });
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-
       const data = await res.json();
       if (data.status === 401 || !data) {
         navigate("*");
       } else {
-        console.log("User verified...", data);
+        console.log("User verified...");
         setLoginData(data);
         navigate("/dash");
       }
@@ -55,18 +50,6 @@ const Dashboard = () => {
       DashboardValid();
       setData(true);
     }, 2000);
-
-    const testBackend = async () => {
-      try {
-        const res = await fetch("https://sign-in-form.onrender.com/test");
-        const data = await res.json();
-        console.log("Test response:", data);
-      } catch (error) {
-        console.error("Error with test request:", error);
-      }
-    };
-
-    testBackend();
   }, []);
 
   return (

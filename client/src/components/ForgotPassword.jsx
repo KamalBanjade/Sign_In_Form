@@ -12,7 +12,7 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
 
   const userValid = async () => {
-    const res = await fetch(`https://sign-in-form.onrender.com/forgotpassword/${id}/${token}`, {
+    const res = await fetch(`http://localhost:8009/forgotpassword/${id}/${token}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
