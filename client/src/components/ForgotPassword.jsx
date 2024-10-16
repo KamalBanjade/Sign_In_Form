@@ -98,7 +98,7 @@ const ForgotPassword = () => {
             />
           </div>
           <button className="custom-button" type="submit" disabled={loading}>
-            {loading ? "Sending..." : "Send"}
+            {loading ? "Changing..." : "Change"}
           </button>
         </form>
         <ToastContainer />
